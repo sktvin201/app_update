@@ -1,0 +1,87 @@
+<resources>
+
+    <!-- TAB低导样式 -->
+    <style name="TabNav">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/tab_main_font_color</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+    <!-- ListView样式 -->
+    <style name="MListView">
+        <item name="android:scrollbars">none</item>
+        <item name="android:listSelector">@color/transparent</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <!-- GrideView样式 -->
+    <style name="MGridView">
+        <item name="android:scrollbars">none</item>
+        <item name="android:listSelector">@color/transparent</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <!-- 定制进度等待 -->
+    <style name="DialogLoading" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <!-- 重写系统弹出Dialog -->
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+
+        <!--边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上 如果为false Dialog整体透明-->
+        <item name="android:windowIsFloating">false</item>
+        <!--半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 除去title -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 模糊 配合 windowIsFloating 此项如果为true 则不显示透明效果 如果此项为false 则显示透明效果-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 除去对话框黑色背景色 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
+
+    <!-- 横线 -->
+    <style name="LineHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.3dp</item>
+        <item name="android:background">#E1E1E1</item>
+    </style>
+
+    <!-- 竖线 -->
+    <style name="LineVertical">
+        <item name="android:layout_width">0.3dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#cccccc</item>
+    </style>
+
+    <!--弹框从底部弹出样式-->
+    <style name="AnimBottomDialog" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/dialog_bottom_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_bottom_exit</item>
+    </style>
+
+    <!-- 自定义RatingBar样式 -->
+    <style name="ReviewRatingbar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/m_ratingbar_normal_bg</item>
+        <item name="android:minHeight">19dp</item>
+        <item name="android:maxHeight">19dp</item>
+    </style>
+
+</resources>

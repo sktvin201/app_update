@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!--主背景颜色-->
+    <color name="bg_main">#F7F7F7</color>
+
+    <!--灰色-->
+    <color name="gray_hint">#9B9B9B</color>
+    <color name="gray_disable">#F2F2F2</color>
+    <color name="gray_border">#E3E3E3</color>
+    <color name="gray_line">#E1E1E1</color>
+
+    <!--字体颜色-->
+    <color name="font_gray_primary">#4A4A4A</color>
+    <color name="font_gray_light">#AEAEAE</color>
+    <color name="font_gray_unimportant">#9B9B9B</color>
+
+    <!--更新组件颜色-->
+    <color name="dialog_update_title_bg">#1A4D7A</color>
+    <color name="btn_update_n">#2872B3</color>
+    <color name="btn_update_s">#1A4D7A</color>
+
+</resources>

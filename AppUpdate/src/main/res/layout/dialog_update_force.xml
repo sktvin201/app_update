@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="120dp"
+        android:background="@color/bg_main"
+        android:minHeight="180dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/dialog_update_title_bg"
+            android:gravity="center"
+            android:text="版本更新"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="8dp"
+                android:text="您的版本已不提供服务，请您下载新版本。"
+                android:textColor="@color/font_gray_primary"
+                android:textSize="@dimen/font_normal" />
+
+            <com.daimajia.numberprogressbar.NumberProgressBar xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/npb_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_content"
+                android:layout_margin="8dp"
+                android:visibility="invisible"
+                custom:max="100"
+                custom:progress="0"
+                custom:progress_reached_bar_height="1.5dp"
+                custom:progress_reached_color="#3498DB"
+                custom:progress_text_color="#3498DB"
+                custom:progress_text_offset="1dp"
+                custom:progress_text_size="10sp"
+                custom:progress_text_visibility="visible"
+                custom:progress_unreached_bar_height="0.75dp"
+                custom:progress_unreached_color="#CCCCCC" />
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_below="@+id/npb_progress"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_ring_update"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:text="更新"
+                android:textColor="@drawable/btn_font_update"
+                android:textSize="@dimen/font_normal" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

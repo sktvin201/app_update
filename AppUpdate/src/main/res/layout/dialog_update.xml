@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="120dp"
+        android:background="@color/bg_main"
+        android:minHeight="300dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/dialog_update_title_bg"
+            android:gravity="center"
+            android:text="版本更新"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_big" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="44dp"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    android:padding="8dp"
+                    android:text="了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚的飞"
+                    android:textColor="@color/font_gray_primary" />
+
+            </ScrollView>
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/btn_ring_update"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:text="更新"
+                android:textColor="@drawable/btn_font_update"
+                android:textSize="@dimen/font_normal" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
