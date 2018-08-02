@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 public class DownloadService extends Service {
 
     private static NotificationManager nm;
-    private static Notification notification;
+    private static Notification.Builder notification;
     private static boolean cancelUpdate = false;
     private static MyHandler myHandler;
     private static ExecutorService executorService = Executors.newFixedThreadPool(5); // 固定五个线程来执行任务
@@ -65,8 +65,13 @@ public class DownloadService extends Service {
     public static void downNewFile(final String url, final int notificationId, final String name) {
         if (download.containsKey(notificationId))
             return;
-        notification = new Notification();
-        notification.icon = android.R.drawable.stat_sys_download;
+        notification = new Notification.Builder(mContext)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setTicker(name + "开始下载")
+                .setWhen(System.currentTimeMillis())
+                .setDefaults(Notification.DEFAULT_LIGHTS)
+
+        notification.icon = ;
         // notification.icon=android.R.drawable.stat_sys_download_done;
         notification.tickerText = name + "开始下载";
         notification.when = System.currentTimeMillis();
@@ -77,7 +82,9 @@ public class DownloadService extends Service {
         notification.setLatestEventInfo(mContext, name, "0%", contentIntent);
         download.put(notificationId, 0);
         // 将下载任务添加到任务栏中
-        nm.notify(notificationId, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            nm.notify(notificationId, notification.build());
+        }
         // 启动线程开始执行下载任务
         downFile(url, notificationId, name);
     }
@@ -166,7 +173,7 @@ public class DownloadService extends Service {
                     } else {
                         tempFile.delete();
                     }
-                } catch (ClientProtocolException e) {
+                } catch (Exception e) {
                     if (null != tempFile && tempFile.exists())
                         tempFile.delete();
                     Message message = myHandler.obtainMessage(4, name + "下载失败：网络异常！");
