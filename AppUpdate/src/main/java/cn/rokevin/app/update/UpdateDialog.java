@@ -56,16 +56,9 @@ public class UpdateDialog extends BaseDialog {
         }
     }
 
-    public void showDialog(boolean isForce, String version, String url, String content) {
+    public void showDialog(VersionData version) {
 
-        VersionData versionData = new VersionData();
-
-        versionData.setForce(isForce);
-        versionData.setVersion(version);
-        versionData.setUrl(url);
-        versionData.setContent(content);
-
-        mVersion = versionData;
+        mVersion = version;
 
         try {
             if (!isShowing()) {

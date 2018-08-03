@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
-
 /**
  * Created by luokaiwen on 15/5/28.
  * <p/>

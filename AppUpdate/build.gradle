@@ -34,6 +34,8 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+
+    useLibrary 'org.apache.http.legacy' // Apache HttpClient 包
 }
 
 // 解决javadoc报错问题
@@ -52,7 +54,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.daimajia.numberprogressbar:library:1.2@aar'
 }
 
 ext {

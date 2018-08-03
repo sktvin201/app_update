@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,7 +13,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -26,18 +33,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DownloadService extends Service {
 
-    private static NotificationManager nm;
-    private static Notification.Builder notification;
+    private static NotificationManager notificationManager;
     private static boolean cancelUpdate = false;
     private static MyHandler myHandler;
     private static ExecutorService executorService = Executors.newFixedThreadPool(5); // 固定五个线程来执行任务
-    public static Map<Integer, Integer> download = new HashMap<Integer, Integer>();
-    public static Context mContext;
+    private static Map<Integer, Integer> download = new HashMap<>();
+    private static Context mContext;
+    private static NotificationCompat.Builder builderProgress;
+    private static int notificationId;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -53,7 +63,7 @@ public class DownloadService extends Service {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         myHandler = new MyHandler(Looper.myLooper(), DownloadService.this);
     }
 
@@ -62,35 +72,40 @@ public class DownloadService extends Service {
         super.onDestroy();
     }
 
-    public static void downNewFile(final String url, final int notificationId, final String name) {
+    //    public static void downNewFile(final String url, final int notificationId, final String name) {
+    public static void downNewFile(final String url) {
+
+        notificationId = ((int) (System.currentTimeMillis() / 1000));
+
+        Log.e("downFile", "notificationId:" + notificationId);
+
+        String name = mContext.getPackageName();
+
         if (download.containsKey(notificationId))
             return;
-        notification = new Notification.Builder(mContext)
-                .setSmallIcon(android.R.drawable.stat_sys_download)
-                .setTicker(name + "开始下载")
-                .setWhen(System.currentTimeMillis())
-                .setDefaults(Notification.DEFAULT_LIGHTS)
 
-        notification.icon = ;
-        // notification.icon=android.R.drawable.stat_sys_download_done;
-        notification.tickerText = name + "开始下载";
-        notification.when = System.currentTimeMillis();
-        notification.defaults = Notification.DEFAULT_LIGHTS;
-        //显示在“正在进行中”
+        //进度条通知
+        builderProgress = new NotificationCompat.Builder(mContext);
+        builderProgress.setContentTitle("下载中");
+        builderProgress.setSmallIcon(android.R.drawable.stat_sys_download);
+        builderProgress.setTicker("进度条通知");
+        builderProgress.setWhen(System.currentTimeMillis());
+        builderProgress.setDefaults(Notification.DEFAULT_LIGHTS);
+        builderProgress.setProgress(100, 0, false);
+        final Notification notification = builderProgress.build();
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, notificationId, new Intent(Intent.ACTION_VIEW), 0);
-        notification.setLatestEventInfo(mContext, name, "0%", contentIntent);
+        //发送一个通知
+        notificationManager.notify(notificationId, notification);
+
         download.put(notificationId, 0);
-        // 将下载任务添加到任务栏中
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            nm.notify(notificationId, notification.build());
-        }
+
         // 启动线程开始执行下载任务
         downFile(url, notificationId, name);
     }
 
     // 下载更新文件
     private static void downFile(final String url, final int notificationId, final String name) {
+
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -146,7 +161,9 @@ public class DownloadService extends Service {
 
                             // 每下载完成1%就通知任务栏进行修改下载进度
                             if (precent - download.get(notificationId) >= 1) {
+
                                 download.put(notificationId, precent);
+
                                 Message message = myHandler.obtainMessage(3, precent);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("name", name);
@@ -173,15 +190,10 @@ public class DownloadService extends Service {
                     } else {
                         tempFile.delete();
                     }
-                } catch (Exception e) {
-                    if (null != tempFile && tempFile.exists())
-                        tempFile.delete();
-                    Message message = myHandler.obtainMessage(4, name + "下载失败：网络异常！");
-                    message.arg1 = notificationId;
-                    myHandler.sendMessage(message);
                 } catch (IOException e) {
                     if (null != tempFile && tempFile.exists())
                         tempFile.delete();
+//                    Message message = myHandler.obtainMessage(4, name + "下载失败：网络异常！");
                     Message message = myHandler.obtainMessage(4, name + "下载失败：文件传输异常");
                     message.arg1 = notificationId;
                     myHandler.sendMessage(message);
@@ -196,13 +208,49 @@ public class DownloadService extends Service {
         });
     }
 
-    // 安装下载后的apk文件
-    private void Instanll(File file, Context context) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        context.startActivity(intent);
+    /**
+     * 显示一个下载带进度条的通知
+     *
+     * @param context 上下文
+     */
+    public static void showNotificationProgress(Context context) {
+        //进度条通知
+        final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
+        builderProgress.setContentTitle("下载中");
+        builderProgress.setSmallIcon(android.R.drawable.stat_sys_download);
+        builderProgress.setTicker("进度条通知");
+        builderProgress.setProgress(100, 0, false);
+        final Notification notification = builderProgress.build();
+        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        //发送一个通知
+        notificationManager.notify(notificationId, notification);
+        /**创建一个计时器,模拟下载进度**/
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            int progress = 0;
+
+            @Override
+            public void run() {
+                Log.i("progress", progress + "");
+                while (progress <= 100) {
+                    progress++;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //更新进度条
+                    builderProgress.setProgress(100, progress, false);
+                    //再次通知
+                    notificationManager.notify(notificationId, builderProgress.build());
+                }
+                //计时器退出
+                this.cancel();
+                //进度条退出
+                notificationManager.cancel(notificationId);
+                return;//结束方法
+            }
+        }, 0);
     }
 
     /* 事件处理类 */
@@ -227,23 +275,33 @@ public class DownloadService extends Service {
                     case 1:
                         break;
                     case 2:
-                        contentIntent = PendingIntent.getActivity(DownloadService.this, msg.arg1, new Intent(Intent.ACTION_VIEW), 0);
-                        notification.setLatestEventInfo(DownloadService.this, msg.getData().getString("name") + "下载完成", "100%", contentIntent);
-                        nm.notify(msg.arg1, notification);
+
+                        //更新进度条
+                        builderProgress.setProgress(100, 100, false);
+                        //再次通知
+                        notificationManager.notify(msg.arg1, builderProgress.build());
+
                         // 下载完成后清除所有下载信息，执行安装提示
                         download.remove(msg.arg1);
-                        nm.cancel(msg.arg1);
-                        Instanll((File) msg.obj, context);
+                        notificationManager.cancel(msg.arg1);
+                        IntentUtil.instanll((File) msg.obj, context);
                         break;
                     case 3:
-                        contentIntent = PendingIntent.getActivity(DownloadService.this, msg.arg1, new Intent(Intent.ACTION_VIEW), 0);
-                        notification.setLatestEventInfo(DownloadService.this, msg.getData().getString("name") + "正在下载", download.get(msg.arg1) + "%", contentIntent);
-                        nm.notify(msg.arg1, notification);
+
+                        int progress = download.get(msg.arg1);
+
+                        Log.e("tag", "progress:" + progress);
+
+                        //更新进度条
+                        builderProgress.setProgress(100, download.get(msg.arg1), false);
+                        //再次通知
+                        notificationManager.notify(msg.arg1, builderProgress.build());
+
                         break;
                     case 4:
                         Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show();
                         download.remove(msg.arg1);
-                        nm.cancel(msg.arg1);
+                        notificationManager.cancel(msg.arg1);
                         break;
                 }
             }

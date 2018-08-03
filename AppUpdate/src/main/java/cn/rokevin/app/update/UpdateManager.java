@@ -2,14 +2,10 @@ package cn.rokevin.app.update;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.ViewGroup;
-
-import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,7 +60,7 @@ public class UpdateManager {
                     break;
                 case DOWN_OVER:
 
-                    installApk();
+                    IntentUtil.instanll(new File(saveFileName), mContext);
                     break;
                 default:
                     break;
@@ -101,7 +97,7 @@ public class UpdateManager {
                 @Override
                 public void onInstall() {
 
-                    installApk();
+                    IntentUtil.instanll(new File(saveFileName), mContext);
                 }
             });
             updateForceDialog.showDialog(mViewGroup);
@@ -115,7 +111,8 @@ public class UpdateManager {
 //        builder.setMessage(updateMsg);
 //        builder.setPositiveButton("下载", new OnClickListener() {
 //            @Override
-//            public void onClick(DialogInterface dialog, int which) {
+//            public void onClick(
+// DialogInterface dialog, int which) {
 //                dialog.dismiss();
 //                showDownloadDialog();
 //            }
@@ -207,19 +204,5 @@ public class UpdateManager {
     private void downloadApk() {
         downLoadThread = new Thread(mdownApkRunnable);
         downLoadThread.start();
-    }
-
-    /**
-     * 安装apk
-     */
-    private void installApk() {
-        File apkfile = new File(saveFileName);
-        if (!apkfile.exists()) {
-            return;
-        }
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
-        mContext.startActivity(i);
-
     }
 }

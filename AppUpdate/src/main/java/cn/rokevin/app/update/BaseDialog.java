@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import cn.rokevin.app.update.R;
+
 /**
  * Created by luokaiwen on 15/4/30.
  * <p/>
