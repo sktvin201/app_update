@@ -88,7 +88,7 @@ def gitUrl = 'git@github.com:Ro6Fish/PhotoPicker.git'  // Git仓库的url
 group = "cn.rokevin.app"            // Maven Group ID for the artifact，一般填你唯一的包名
 // 这个version是区分library版本的，因此当我们需要更新library时记得修改这个version
 // 这个version影响后面的引用
-version = "1.0.10"
+version = "1.1.1"
 
 install {
     repositories.mavenInstaller {
