@@ -30,7 +30,7 @@ public class UpdateManager {
 
     private Dialog downloadDialog;
     /* 下载包安装路径 */
-    private static final String savePath = Environment.getExternalStorageDirectory() + "/wonderworld";
+    private static final String savePath = Environment.getExternalStorageDirectory() + "/app_update";
 
     private static final String saveFileName = savePath + "UpdateDemoRelease.apk";
 

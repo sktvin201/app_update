@@ -57,7 +57,7 @@ abstract class BaseDialog {
     /**
      * Dialog样式
      */
-    private int mStyle = R.style.DialogTheme;
+    private int mStyle = R.style.AppUpdateDialogTheme;
 
     /**
      * Dialog动画样式

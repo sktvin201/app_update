@@ -155,12 +155,12 @@ public class DownloadService extends Service {
                     }
 
                     if (is != null) {
-                        File rootFile = new File(Environment.getExternalStorageDirectory(), "/111");
+                        File rootFile = new File(Environment.getExternalStorageDirectory(), "/temp_app_update");
                         if (!rootFile.exists() && !rootFile.isDirectory())
                             rootFile.mkdirs();
 
                         //tempFile = new File(Environment.getExternalStorageDirectory(), "/ddd/" + url.substring(url.lastIndexOf("/"), url.indexOf("?")) + "_" + notificationId + ".apk");
-                        tempFile = new File(Environment.getExternalStorageDirectory(), "/111/" + "app_update.apk");
+                        tempFile = new File(Environment.getExternalStorageDirectory(), "/temp_app_update/" + "app_update.apk");
                         if (tempFile.exists())
                             tempFile.delete();
                         tempFile.createNewFile();

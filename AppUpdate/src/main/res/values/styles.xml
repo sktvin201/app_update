@@ -1,29 +1,7 @@
 <resources>
 
-    <!-- TAB低导样式 -->
-    <style name="TabNav">
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/tab_main_font_color</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginTop">3dp</item>
-        <item name="android:button">@null</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:drawablePadding">5dp</item>
-    </style>
-
-    <!-- 定制进度等待 -->
-    <style name="DialogLoading" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
     <!-- 重写系统弹出Dialog -->
-    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+    <style name="AppUpdateDialogTheme" parent="@android:style/Theme.Dialog">
 
         <!--边框-->
         <item name="android:windowFrame">@null</item>

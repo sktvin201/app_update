@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 27
@@ -56,27 +58,99 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-ext {
-    package_userOrg = '' // 组织名 不填默认用户名
-    package_repo = 'maven' // bintray上的仓库名，一般为maven
-    package_type = 'aar'  // 输出类型
-    package_group = 'cn.rokevin.app' // JCenter的GroupId
-    package_artifact = 'update' // JCenter的ArtifactId
-    package_version = '1.0.0'  // JCenter的VersionId
-    package_description = 'app更新弹框'
+//ext {
+//    package_userOrg = '' // 组织名 不填默认用户名
+//    package_repo = 'maven' // bintray上的仓库名，一般为maven
+//    package_type = 'aar'  // 输出类型
+//    package_group = 'cn.rokevin.app' // JCenter的GroupId
+//    package_artifact = 'appupdate' // JCenter的ArtifactId
+//    package_version = '1.0.2'  // JCenter的VersionId
+//    package_description = 'app更新弹框'
+//
+//    siteUrl = 'https://github.com/Ro6Fish/PhotoPicker' // 项目的主页
+//    gitUrl = 'git@github.com:Ro6Fish/PhotoPicker.git'  // Git仓库的url
+//
+//    //开发者信息
+//    developerId = 'ro54kevin'
+//    developerName = 'rokevin'
+//    developerEmail = ''
+//
+//    //开源协议
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = 'Apache-2.0'
+//}
+//
+//apply from: 'https://raw.githubusercontent.com/Ro6Fish/JCenter/v2/bintray.gradle'
 
-    siteUrl = 'https://github.com/Ro6Fish/PhotoPicker' // 项目的主页
-    gitUrl = 'git@github.com:Ro6Fish/PhotoPicker.git'  // Git仓库的url
+def siteUrl = 'https://github.com/Ro6Fish/PhotoPicker' // 项目的主页
+def gitUrl = 'git@github.com:Ro6Fish/PhotoPicker.git'  // Git仓库的url
+group = "cn.rokevin.app"            // Maven Group ID for the artifact，一般填你唯一的包名
+// 这个version是区分library版本的，因此当我们需要更新library时记得修改这个version
+// 这个version影响后面的引用
+version = "1.0.9"
 
-    //开发者信息
-    developerId = 'ro54kevin'
-    developerName = 'rokevin'
-    developerEmail = ''
-
-    //开源协议
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = 'Apache-2.0'
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'app更新弹框'     //项目的描述 你可以多写一点
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'ro54kevin'        //填写的一些基本信息
+                        name 'rokevin'
+                        email '393917209@qq.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
 }
 
-apply from: 'https://raw.githubusercontent.com/Ro6Fish/JCenter/v2/bintray.gradle'
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+artifacts {
+    //archives javadocJar
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "appupdate"    //发布到JCenter上的项目名字
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
