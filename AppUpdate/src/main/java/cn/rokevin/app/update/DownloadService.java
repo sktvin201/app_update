@@ -1,6 +1,7 @@
 package cn.rokevin.app.update;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -33,10 +34,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static android.support.v4.app.NotificationCompat.PRIORITY_HIGH;
 
 public class DownloadService extends Service {
 
@@ -48,6 +49,9 @@ public class DownloadService extends Service {
     private static Context mContext;
     private static NotificationCompat.Builder builderProgress;
     private static int notificationId;
+
+    private static String PUSH_CHANNEL_ID;
+    private static final String PUSH_CHANNEL_NAME = "App更新库";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -64,6 +68,16 @@ public class DownloadService extends Service {
         super.onCreate();
         mContext = this;
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        PUSH_CHANNEL_ID = mContext.getPackageName() + ".app.update1000"; // 更新渠道
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(PUSH_CHANNEL_ID, PUSH_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
         myHandler = new MyHandler(Looper.myLooper(), DownloadService.this);
     }
 
@@ -85,7 +99,12 @@ public class DownloadService extends Service {
             return;
 
         //进度条通知
-        builderProgress = new NotificationCompat.Builder(mContext);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builderProgress = new NotificationCompat.Builder(mContext, PUSH_CHANNEL_ID);
+        } else {
+            builderProgress = new NotificationCompat.Builder(mContext);
+        }
+
         builderProgress.setContentTitle("下载中");
         builderProgress.setSmallIcon(android.R.drawable.stat_sys_download);
         builderProgress.setTicker("进度条通知");
@@ -96,6 +115,10 @@ public class DownloadService extends Service {
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
         //发送一个通知
         notificationManager.notify(notificationId, notification);
+
+        // test
+
+        // showNotificationProgress(mContext);
 
         download.put(notificationId, 0);
 
@@ -132,12 +155,12 @@ public class DownloadService extends Service {
                     }
 
                     if (is != null) {
-                        File rootFile = new File(Environment.getExternalStorageDirectory(), "/ddd");
+                        File rootFile = new File(Environment.getExternalStorageDirectory(), "/111");
                         if (!rootFile.exists() && !rootFile.isDirectory())
-                            rootFile.mkdir();
+                            rootFile.mkdirs();
 
                         //tempFile = new File(Environment.getExternalStorageDirectory(), "/ddd/" + url.substring(url.lastIndexOf("/"), url.indexOf("?")) + "_" + notificationId + ".apk");
-                        tempFile = new File(Environment.getExternalStorageDirectory(), "/ddd/bm/" + "merchant.apk");
+                        tempFile = new File(Environment.getExternalStorageDirectory(), "/111/" + "app_update.apk");
                         if (tempFile.exists())
                             tempFile.delete();
                         tempFile.createNewFile();
@@ -208,51 +231,6 @@ public class DownloadService extends Service {
         });
     }
 
-    /**
-     * 显示一个下载带进度条的通知
-     *
-     * @param context 上下文
-     */
-    public static void showNotificationProgress(Context context) {
-        //进度条通知
-        final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
-        builderProgress.setContentTitle("下载中");
-        builderProgress.setSmallIcon(android.R.drawable.stat_sys_download);
-        builderProgress.setTicker("进度条通知");
-        builderProgress.setProgress(100, 0, false);
-        final Notification notification = builderProgress.build();
-        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        //发送一个通知
-        notificationManager.notify(notificationId, notification);
-        /**创建一个计时器,模拟下载进度**/
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            int progress = 0;
-
-            @Override
-            public void run() {
-                Log.i("progress", progress + "");
-                while (progress <= 100) {
-                    progress++;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //更新进度条
-                    builderProgress.setProgress(100, progress, false);
-                    //再次通知
-                    notificationManager.notify(notificationId, builderProgress.build());
-                }
-                //计时器退出
-                this.cancel();
-                //进度条退出
-                notificationManager.cancel(notificationId);
-                return;//结束方法
-            }
-        }, 0);
-    }
-
     /* 事件处理类 */
     class MyHandler extends Handler {
         private Context context;
@@ -281,6 +259,9 @@ public class DownloadService extends Service {
                         //再次通知
                         notificationManager.notify(msg.arg1, builderProgress.build());
 
+                        //进度条退出
+                        notificationManager.cancel(notificationId);
+
                         // 下载完成后清除所有下载信息，执行安装提示
                         download.remove(msg.arg1);
                         notificationManager.cancel(msg.arg1);
@@ -292,10 +273,16 @@ public class DownloadService extends Service {
 
                         Log.e("tag", "progress:" + progress);
 
+                        if (progress <= 100) {
+
+                            builderProgress.setContentTitle("正在下载, 已下载" + progress + "%");
+                        }
+
                         //更新进度条
-                        builderProgress.setProgress(100, download.get(msg.arg1), false);
+                        builderProgress.setProgress(100, progress, false);
+
                         //再次通知
-                        notificationManager.notify(msg.arg1, builderProgress.build());
+                        notificationManager.notify(notificationId, builderProgress.build());
 
                         break;
                     case 4:
@@ -306,5 +293,58 @@ public class DownloadService extends Service {
                 }
             }
         }
+    }
+
+    /**
+     * 显示一个下载带进度条的通知 测试使用
+     *
+     * @param context 上下文
+     */
+    public static void showNotificationProgress(Context context) {
+        //进度条通知
+        builderProgress = new NotificationCompat.Builder(context, "2");
+        builderProgress.setContentTitle("正在下载中");
+        builderProgress.setSmallIcon(android.R.drawable.stat_sys_download);
+        builderProgress.setTicker("进度条通知");
+        builderProgress.setPriority(PRIORITY_HIGH);
+        builderProgress.setProgress(100, 0, false);
+        builderProgress.setChannelId("123");
+        final Notification notification = builderProgress.build();
+        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        //发送一个通知
+        notificationManager.notify(notificationId, notification);
+        /**创建一个计时器,模拟下载进度**/
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            int progress = 0;
+//
+//            @Override
+//            public void run() {
+//                Log.i("progress", progress + "");
+//                while (progress <= 100) {
+//                    progress++;
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    if (progress <= 100) {
+//
+//                        builderProgress.setContentTitle("正在下载中, 已下载" + progress + "%");
+//                    }
+//
+//                    //更新进度条
+//                    builderProgress.setProgress(100, progress, false);
+//                    //再次通知
+//                    notificationManager.notify(notificationId, builderProgress.build());
+//                }
+//                //计时器退出
+//                this.cancel();
+//                //进度条退出
+//                notificationManager.cancel(notificationId);
+//                return;//结束方法
+//            }
+//        }, 0);
     }
 }

@@ -35,8 +35,8 @@ public class UpdateDialog extends BaseDialog {
     @Override
     protected void showView(View view) {
 
-        tvContent = (TextView) view.findViewById(R.id.tv_content);
-        btnUpdate = (Button) view.findViewById(R.id.btn_update);
+        tvContent = view.findViewById(R.id.tv_content);
+        btnUpdate = view.findViewById(R.id.btn_update);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
 
@@ -44,7 +44,9 @@ public class UpdateDialog extends BaseDialog {
             public void onClick(View v) {
 
                 if (null != mOnUpdateListener) {
+                    btnUpdate.setEnabled(false);
                     mOnUpdateListener.onUpdateConfirm();
+                    btnUpdate.setEnabled(false);
                 }
                 cancel();
             }
