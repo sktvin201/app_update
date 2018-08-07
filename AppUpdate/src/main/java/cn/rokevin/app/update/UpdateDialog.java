@@ -11,7 +11,7 @@ import android.widget.TextView;
  * <p/>
  * 更新弹框
  */
-public class UpdateDialog extends BaseDialog {
+class UpdateDialog extends BaseDialog {
 
     private VersionData mVersion;
 

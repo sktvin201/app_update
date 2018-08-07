@@ -9,7 +9,7 @@ import android.widget.Button;
  * <p/>
  * 强制更新弹框
  */
-public class UpdateForceDialog extends BaseDialog {
+class UpdateForceDialog extends BaseDialog {
 
     NumberProgressBar npbProgress;
     Button btnUpdate;

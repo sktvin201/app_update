@@ -53,6 +53,8 @@ public class DownloadService extends Service {
     private static String PUSH_CHANNEL_ID;
     private static final String PUSH_CHANNEL_NAME = "App更新库";
 
+    public static boolean isDownloading = false;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -247,6 +249,7 @@ public class DownloadService extends Service {
             if (msg != null) {
                 switch (msg.what) {
                     case 0:
+                        isDownloading = false;
                         Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show();
                         download.remove(msg.arg1);
                         break;
@@ -254,6 +257,7 @@ public class DownloadService extends Service {
                         break;
                     case 2:
 
+                        isDownloading = false;
                         //更新进度条
                         builderProgress.setProgress(100, 100, false);
                         //再次通知
@@ -274,7 +278,7 @@ public class DownloadService extends Service {
                         Log.e("tag", "progress:" + progress);
 
                         if (progress <= 100) {
-
+                            isDownloading = true;
                             builderProgress.setContentTitle("正在下载, 已下载" + progress + "%");
                         }
 
@@ -286,6 +290,7 @@ public class DownloadService extends Service {
 
                         break;
                     case 4:
+                        isDownloading = false;
                         Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show();
                         download.remove(msg.arg1);
                         notificationManager.cancel(msg.arg1);

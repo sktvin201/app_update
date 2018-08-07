@@ -55,24 +55,33 @@ public class AppUpdate {
 
         } else {
 
-            Intent intent = new Intent(activity, DownloadService.class);
-            activity.startService(intent);
+            boolean isDownloading = DownloadService.isDownloading;
 
-            // 普通更新
-            UpdateDialog updateDialog = new UpdateDialog(activity);
-            updateDialog.setOnUpdateListener(new UpdateDialog.OnUpdateListener() {
-                @Override
-                public void onUpdateConfirm() {
+            if (isDownloading) {
 
-                    Intent intent = new Intent(activity, DownloadService.class);
-                    activity.startService(intent);
+                ToastUtil.shortShow(activity, "正在更新中...");
 
-                    ToastUtil.shortShow(activity, "开始更新...");
-                    DownloadService.downNewFile(url);
-                }
-            });
+            } else {
 
-            updateDialog.showDialog(versionData);
+                Intent intent = new Intent(activity, DownloadService.class);
+                activity.startService(intent);
+
+                // 普通更新
+                UpdateDialog updateDialog = new UpdateDialog(activity);
+                updateDialog.setOnUpdateListener(new UpdateDialog.OnUpdateListener() {
+                    @Override
+                    public void onUpdateConfirm() {
+
+                        Intent intent = new Intent(activity, DownloadService.class);
+                        activity.startService(intent);
+
+                        ToastUtil.shortShow(activity, "开始更新...");
+                        DownloadService.downNewFile(url);
+                    }
+                });
+
+                updateDialog.showDialog(versionData);
+            }
         }
     }
 }
