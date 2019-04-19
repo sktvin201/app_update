@@ -8,7 +8,7 @@ import android.support.v4.content.FileProvider;
 
 import java.io.File;
 
-class IntentUtil {
+public class IntentUtil {
 
     // 安装下载后的apk文件
     public static void instanll(File file, Context context) {
