@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:background="@drawable/app_update_bg_dialog"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="版本更新"
+            android:textColor="#1C1C1C"
+            android:textSize="18dp" />
+
+        <View
+            style="@style/LineHorizontal"
+            android:background="#9E9E9E" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="您的版本已不提供服务，请您下载新版本。"
+            android:textColor="@color/font_gray_primary"
+            android:textSize="16dp" />
+
+        <!--<cn.rokevin.app.update.NumberProgressBar xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/npb_progress"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--android:layout_marginLeft="24dp"-->
+        <!--android:layout_marginRight="24dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:visibility="invisible"-->
+        <!--custom:max="100"-->
+        <!--custom:progress="0"-->
+        <!--custom:progress_reached_bar_height="1.5dp"-->
+        <!--custom:progress_reached_color="#3498DB"-->
+        <!--custom:progress_text_color="#3498DB"-->
+        <!--custom:progress_text_offset="1dp"-->
+        <!--custom:progress_text_size="10sp"-->
+        <!--custom:progress_text_visibility="visible"-->
+        <!--custom:progress_unreached_bar_height="0.75dp"-->
+        <!--custom:progress_unreached_color="#CCCCCC" />-->
+
+        <cn.rokevin.app.upgrade.NumberProgressBar xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/npb_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="invisible"
+            custom:max="100"
+            custom:progress="0"
+            custom:progress_reached_bar_height="1.5dp"
+            custom:progress_reached_color="#3498DB"
+            custom:progress_text_color="#3498DB"
+            custom:progress_text_offset="1dp"
+            custom:progress_text_size="10sp"
+            custom:progress_text_visibility="visible"
+            custom:progress_unreached_bar_height="0.75dp"
+            custom:progress_unreached_color="#CCCCCC" />
+
+        <View
+            style="@style/LineHorizontal"
+            android:background="#9E9E9E" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#4A4A4A"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

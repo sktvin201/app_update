@@ -141,7 +141,7 @@ public class DownloadService extends Service {
 
                     InputStream is;
                     long length;
-                    if (Build.VERSION.SDK_INT >= 9) {
+                    if (Build.VERSION.SDK_INT >= 9) { // 9=2.3
                         URL parseUrl = new URL(url);
                         HttpURLConnection conn = (HttpURLConnection) parseUrl.openConnection();
                         conn.connect();

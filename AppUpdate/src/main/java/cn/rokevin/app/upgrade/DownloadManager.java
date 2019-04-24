@@ -2,6 +2,7 @@ package cn.rokevin.app.upgrade;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -23,13 +24,14 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cn.rokevin.app.upgrade.bean.DownloadInfo;
+import cn.rokevin.app.update.R;
 
 /**
  * 下载管理
  */
 public class DownloadManager implements DownloadProgressListener {
 
+    private static final String TAG = DownloadManager.class.getSimpleName();
     private DownloadInfo info;
     private ProgressListener progressObserver;
     private static File pathFile;
@@ -40,10 +42,23 @@ public class DownloadManager implements DownloadProgressListener {
     private String appName = "upgrade";
     private boolean cancel = false;
 
+    public String getFilePath() {
+
+        return path + "/" + info.getFileName() + "." + info.getFileType();
+    }
+
     public DownloadManager(Context context) {
 
         this.context = context;
         path = context.getExternalCacheDir().getAbsolutePath() + "/downloads/app";
+
+        String name = context.getString(R.string.app_name);
+
+        if (!TextUtils.isEmpty(name)) {
+            appName = name;
+        }
+
+        Log.e(TAG, "appName:" + appName);
 
         info = new DownloadInfo();
         info.setSavePath(path);
@@ -58,7 +73,18 @@ public class DownloadManager implements DownloadProgressListener {
     }
 
     // 下载更新文件
+    public void download(String url) {
+
+        download(url, "");
+    }
+
+    // 下载更新文件
     public void download(final String url, final String name) {
+
+        if (!TextUtils.isEmpty(name)) {
+            appName = name;
+            info.setFileName(name);
+        }
 
         final int downloadTimestamp = ((int) (System.currentTimeMillis() / 1000));
 

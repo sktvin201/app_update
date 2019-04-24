@@ -1,4 +1,4 @@
-package cn.rokevin.app.upgrade.bean;
+package cn.rokevin.app.upgrade;
 
 /**
  * 下载信息

@@ -1,7 +1,5 @@
 package cn.rokevin.app.upgrade;
 
-import cn.rokevin.app.upgrade.bean.DownloadInfo;
-
 /**
  * 下载进度监听
  */

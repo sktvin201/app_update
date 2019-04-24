@@ -9,10 +9,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import cn.rokevin.app.update.AppUpdate;
-import cn.rokevin.app.update.VersionData;
+import cn.rokevin.app.upgrade.AppUpgrade;
+import cn.rokevin.app.upgrade.DownloadInfo;
 import cn.rokevin.app.upgrade.DownloadManager;
-import cn.rokevin.app.upgrade.bean.DownloadInfo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,21 +71,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void update() {
 
-        VersionData versionData = null;
+//        VersionData versionData = null;
+//
+//        versionData = new VersionData();
+//        versionData.setVersion("1.0.1");
+////        versionData.setUrl("http://hm.hlvan.cn/appdownload/stowage.apk");
+//        versionData.setUrl(url);
+//        versionData.setForce(false);
+////        versionData.setContent("1. 了深刻的记录上空间发牢骚深刻的记录上空间发 2. 牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚的飞");
+//        versionData.setContent("1. 修复若干bug<br> 2. 增加特殊功能");
+//
+//        AppUpdate.update(MainActivity.this, versionData);
 
-        versionData = new VersionData();
-        versionData.setVersion("1.0.1");
-//        versionData.setUrl("http://hm.hlvan.cn/appdownload/stowage.apk");
-        versionData.setUrl(url);
-        versionData.setForce(false);
-//        versionData.setContent("1. 了深刻的记录上空间发牢骚深刻的记录上空间发 2. 牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚了深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚深刻的记录上空间发牢骚的飞");
-        versionData.setContent("1. 修复若干bug<br> 2. 增加特殊功能");
 
-        AppUpdate.update(MainActivity.this, versionData);
+        AppUpgrade.update(MainActivity.this, url, false, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
     }
 
     public void forceUpdate() {
 
+        AppUpgrade.update(MainActivity.this, url, true, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
     }
 
     public void start() {

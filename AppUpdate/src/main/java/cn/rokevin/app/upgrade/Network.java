@@ -1,4 +1,4 @@
-package cn.rokevin.app.upgrade.net;
+package cn.rokevin.app.upgrade;
 
 import android.os.Build;
 import android.util.Log;
@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Network {
+class Network {
 
     private static final String TAG = Network.class.getSimpleName();
 
