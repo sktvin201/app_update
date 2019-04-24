@@ -11,6 +11,8 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import cn.rokevin.app.R;
+
 class NumberProgressBar extends View {
 
     private Context mContext;

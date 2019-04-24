@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 
+import cn.rokevin.app.R;
+
 /**
  * Created by luokaiwen on 15/5/28.
  * <p/>

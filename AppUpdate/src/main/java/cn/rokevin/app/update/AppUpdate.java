@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import cn.rokevin.app.R;
+
 /**
  * App更新工具类
  */
