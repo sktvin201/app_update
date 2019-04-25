@@ -2,6 +2,10 @@ package cn.rokevin.app.upgrade;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -24,7 +28,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cn.rokevin.app.update.R;
+import cn.rokevin.app.R;
+import cn.rokevin.app.update.IntentUtil;
 
 /**
  * 下载管理
@@ -42,6 +47,16 @@ public class DownloadManager implements DownloadProgressListener {
     private String appName = "upgrade";
     private boolean cancel = false;
 
+    private static MyHandler myHandler;
+
+    public DownloadInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(DownloadInfo info) {
+        this.info = info;
+    }
+
     public String getFilePath() {
 
         return path + "/" + info.getFileName() + "." + info.getFileType();
@@ -51,6 +66,8 @@ public class DownloadManager implements DownloadProgressListener {
 
         this.context = context;
         path = context.getExternalCacheDir().getAbsolutePath() + "/downloads/app";
+
+        myHandler = new MyHandler(Looper.myLooper(), context);
 
         String name = context.getString(R.string.app_name);
 
@@ -91,6 +108,8 @@ public class DownloadManager implements DownloadProgressListener {
         if (download.containsKey(downloadTimestamp))
             return;
 
+        sendMessage(info);
+
         download.put(downloadTimestamp, 0);
 
         info.setDownloadTimestamp(downloadTimestamp);
@@ -106,21 +125,11 @@ public class DownloadManager implements DownloadProgressListener {
 
                     InputStream is;
                     long length;
-                    if (Build.VERSION.SDK_INT >= 9) {
-                        URL parseUrl = new URL(url);
-                        HttpURLConnection conn = (HttpURLConnection) parseUrl.openConnection();
-                        conn.connect();
-                        length = conn.getContentLength();
-                        is = conn.getInputStream();
-                    } else {
-                        HttpClient client = new DefaultHttpClient();
-                        // params[0]代表连接的url
-                        HttpGet get = new HttpGet(url);
-                        HttpResponse response = client.execute(get);
-                        HttpEntity entity = response.getEntity();
-                        length = entity.getContentLength();
-                        is = entity.getContent();
-                    }
+                    URL parseUrl = new URL(url);
+                    HttpURLConnection conn = (HttpURLConnection) parseUrl.openConnection();
+                    conn.connect();
+                    length = conn.getContentLength();
+                    is = conn.getInputStream();
 
                     // 设置下载总长度
                     info.setContentLength(length);
@@ -165,9 +174,7 @@ public class DownloadManager implements DownloadProgressListener {
 
                                 download.put(downloadTimestamp, precent);
 
-                                if (progressObserver != null) {
-                                    progressObserver.progressChanged(info);
-                                }
+                                sendMessage(info);
                             }
                         }
                         bos.flush();
@@ -182,9 +189,7 @@ public class DownloadManager implements DownloadProgressListener {
                     info.setStatus(DownloadInfo.FINISH);
                     info.setMessage("下载完成");
 
-                    if (progressObserver != null) {
-                        progressObserver.progressChanged(info);
-                    }
+                    sendMessage(info);
 
                 } catch (IOException e) {
 
@@ -193,9 +198,7 @@ public class DownloadManager implements DownloadProgressListener {
                     info.setStatus(DownloadInfo.ERORR);
                     info.setMessage("下载文件失败，文件传输异常");
 
-                    if (progressObserver != null) {
-                        progressObserver.progressChanged(info);
-                    }
+                    sendMessage(info);
 
                 } catch (Exception e) {
 
@@ -204,12 +207,18 @@ public class DownloadManager implements DownloadProgressListener {
                     info.setStatus(DownloadInfo.ERORR);
                     info.setMessage("下载文件失败，" + e.getMessage());
 
-                    if (progressObserver != null) {
-                        progressObserver.progressChanged(info);
-                    }
+                    sendMessage(info);
                 }
             }
         });
+    }
+
+    /**
+     * 安装更新包
+     */
+    public void install() {
+        String filePath = getFilePath();
+        IntentUtil.instanll(new File(filePath), context);
     }
 
     @Override
@@ -230,9 +239,16 @@ public class DownloadManager implements DownloadProgressListener {
         }
         info.setReadLength(readLength);
 
-        if (progressObserver != null) {
-            progressObserver.progressChanged(info);
-        }
+        sendMessage(info);
+    }
+
+    public void sendMessage(DownloadInfo info) {
+
+        Message message = myHandler.obtainMessage();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppBundle.DOWNLOAD_INFO, info);
+        message.setData(bundle);
+        myHandler.sendMessage(message);
     }
 
     /**
@@ -244,5 +260,30 @@ public class DownloadManager implements DownloadProgressListener {
 
     public void setProgressListener(ProgressListener progressObserver) {
         this.progressObserver = progressObserver;
+    }
+
+    /* 事件处理类 */
+    class MyHandler extends Handler {
+        private Context context;
+
+        public MyHandler(Looper looper, Context c) {
+            super(looper);
+            this.context = c;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            if (msg != null) {
+
+                Bundle data = msg.getData();
+                DownloadInfo info = (DownloadInfo) data.getSerializable(AppBundle.DOWNLOAD_INFO);
+
+                if (progressObserver != null) {
+                    progressObserver.progressChanged(info);
+                }
+            }
+        }
     }
 }

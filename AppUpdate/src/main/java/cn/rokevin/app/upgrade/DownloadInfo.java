@@ -1,9 +1,11 @@
 package cn.rokevin.app.upgrade;
 
+import java.io.Serializable;
+
 /**
  * 下载信息
  */
-public class DownloadInfo {
+public class DownloadInfo implements Serializable {
 
     public static final int WAIT_DOWNLOAD = 0;
     public static final int DOWNLOADING = 1;

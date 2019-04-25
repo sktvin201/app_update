@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cn.rokevin.app.update.R;
+import cn.rokevin.app.R;
 
 /**
- * Created by luokaiwen on 15/5/28.
+ * Created by luokaiwen on 19/04/24.
  * <p/>
  * 更新弹框
  */
@@ -49,7 +49,7 @@ class UpdateDialog extends BaseDialog {
 
                 if (null != mOnUpdateListener) {
                     btnUpdate.setEnabled(false);
-                    mOnUpdateListener.onUpdateConfirm();
+                    mOnUpdateListener.confirm();
                     btnUpdate.setEnabled(false);
                 }
                 cancel();
@@ -84,6 +84,6 @@ class UpdateDialog extends BaseDialog {
 
     public interface OnUpdateListener {
 
-        void onUpdateConfirm();
+        void confirm();
     }
 }

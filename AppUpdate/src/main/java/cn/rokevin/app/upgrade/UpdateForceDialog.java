@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 
-import cn.rokevin.app.update.R;
+import cn.rokevin.app.R;
 
 /**
  * Created by luokaiwen on 15/5/28.
@@ -43,11 +43,11 @@ class UpdateForceDialog extends BaseDialog {
 
                 if (((Button) v).getText().equals("安装")) {
                     if (null != mOnUpdateForceListener) {
-                        mOnUpdateForceListener.onInstall();
+                        mOnUpdateForceListener.install();
                     }
                 } else {
                     if (null != mOnUpdateForceListener) {
-                        mOnUpdateForceListener.onUpdateForce();
+                        mOnUpdateForceListener.start();
                         npbProgress.setVisibility(View.VISIBLE);
                         btnUpdate.setEnabled(false);
                     }
@@ -59,10 +59,16 @@ class UpdateForceDialog extends BaseDialog {
     public void setProgress(int progress) {
 
         npbProgress.setProgress(progress);
+
         if (progress >= 99) {
+
             npbProgress.setProgress(100);
             btnUpdate.setText("安装");
             btnUpdate.setEnabled(true);
+
+            if (null != mOnUpdateForceListener) {
+                mOnUpdateForceListener.install();
+            }
         }
     }
 
@@ -89,8 +95,8 @@ class UpdateForceDialog extends BaseDialog {
 
     public interface OnUpdateForceListener {
 
-        public void onUpdateForce();
+        void start();
 
-        public void onInstall();
+        void install();
     }
 }

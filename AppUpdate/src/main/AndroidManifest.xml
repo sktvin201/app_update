@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.rokevin.app.update">
+    package="cn.rokevin.app">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,10 +11,22 @@
         android:supportsRtl="true">
 
         <!-- 下载服务 -->
-        <service android:name=".DownloadService" />
+        <service android:name=".update.DownloadService" />
+        <service android:name=".upgrade.DownloadService" />
 
         <provider
-            android:name=".AppUpdateFileProvider"
+            android:name=".update.AppUpdateFileProvider"
+            android:authorities="${applicationId}.provider.app.update"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!--元数据-->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/app_update_provider_paths" />
+        </provider>
+
+        <provider
+            android:name=".upgrade.AppUpdateFileProvider"
             android:authorities="${applicationId}.provider.app.update"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -16,7 +16,7 @@ import cn.rokevin.app.upgrade.DownloadManager;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    //    private static final String url = "http://imtt.dd.qq.com/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd";
+    //        private static final String url = "http://imtt.dd.qq.com/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd";
     private static final String url = "http://hm.hlvan.cn/appdownload/stowage.apk";
 
     private Context mContext = MainActivity.this;
@@ -84,12 +84,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        AppUpdate.update(MainActivity.this, versionData);
 
 
-        AppUpgrade.update(MainActivity.this, url, false, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+//        AppUpgrade.update(MainActivity.this, url, false, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+
+        AppUpgrade.update(MainActivity.this, false, url, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
     }
 
     public void forceUpdate() {
 
-        AppUpgrade.update(MainActivity.this, url, true, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+//        AppUpgrade.update(MainActivity.this, url, true, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+
+        AppUpgrade.update(MainActivity.this, true, url, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
     }
 
     public void start() {
