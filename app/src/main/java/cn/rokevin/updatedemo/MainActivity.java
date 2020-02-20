@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "1.0.1",
                 "1. 修复若干bug<br> 2. 增加特殊功能"
         );
+
     }
 
     public void forceUpdate() {

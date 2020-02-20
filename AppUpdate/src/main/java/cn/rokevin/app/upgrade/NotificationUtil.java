@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -24,8 +25,8 @@ public class NotificationUtil {
     private static NotificationCompat.Builder builder;
     private NotificationChannel mNotificationChannel;
 
-    private static final String CHANNEL_ID = "app_upgrade";
-    private static final String CHANNEL_NAME = "应用更新";
+    private static final String CHANNEL_ID = "au_upgrade";
+    private static final String CHANNEL_NAME = "应用升级";
 
     private static int notificationId;
 

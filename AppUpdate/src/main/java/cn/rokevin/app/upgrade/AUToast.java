@@ -9,17 +9,13 @@ import android.widget.Toast;
  * <p/>
  * 吐丝帮助类
  */
-class ToastUtil {
+class AUToast {
 
-    public static final String TAG = ToastUtil.class.getSimpleName();
+    public static final String TAG = AUToast.class.getSimpleName();
 
     public static void shortShow(Context context, String content) {
 
-        if (null == context) {
-            return;
-        }
-
-        if (TextUtils.isEmpty(content)) {
+        if (null == context || TextUtils.isEmpty(content)) {
             return;
         }
 
@@ -28,11 +24,7 @@ class ToastUtil {
 
     public static void longShow(Context context, String content) {
 
-        if (null == context) {
-            return;
-        }
-
-        if (TextUtils.isEmpty(content)) {
+        if (null == context || TextUtils.isEmpty(content)) {
             return;
         }
 

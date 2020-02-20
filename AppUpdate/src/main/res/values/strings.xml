@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">upgrade.apk</string>
+    <string name="app_name">au更新</string>
     <string name="error_url">请检查下载地址</string>
     <string name="app_update_name">App更新</string>
     <string name="app_update_is_new">已是最新版本</string>

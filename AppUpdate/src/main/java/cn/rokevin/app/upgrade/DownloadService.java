@@ -56,9 +56,9 @@ public class DownloadService extends Service implements DownloadManager.Progress
         int status = info.getStatus();
 
         if (status == DownloadInfo.DOWNLOADING) {
-            ToastUtil.shortShow(mContext, "正在更新中...");
+//            AUToast.shortShow(mContext, "正在更新中...");
         } else {
-            ToastUtil.shortShow(this, R.string.app_update_start);
+//            AUToast.shortShow(this, R.string.app_update_start);
             urlBundle = intent.getStringExtra(AppBundle.URL);
             downloadManager.download(urlBundle);
         }
@@ -87,7 +87,7 @@ public class DownloadService extends Service implements DownloadManager.Progress
 
                 notificationUtil.updateProgress(info.getPercent());
 
-                String savePath = info.getSavePath();
+                String savePath = info.getPath();
                 String name = info.getFileName();
                 String fileType = info.getFileType();
                 IntentUtil.instanll(new File(savePath, name + "." + fileType), mContext);
@@ -97,7 +97,7 @@ public class DownloadService extends Service implements DownloadManager.Progress
             case DownloadInfo.ERORR:
 
                 notificationUtil.cancle();
-                ToastUtil.shortShow(mContext, info.getMessage());
+                AUToast.shortShow(mContext, info.getMessage());
                 stopSelf();
                 break;
 

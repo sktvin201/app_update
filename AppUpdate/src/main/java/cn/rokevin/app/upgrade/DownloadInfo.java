@@ -15,7 +15,7 @@ public class DownloadInfo implements Serializable {
     /**
      * 存储位置
      */
-    private String savePath;
+    private String path;
 
     /**
      * 文件名称
@@ -62,12 +62,12 @@ public class DownloadInfo implements Serializable {
      */
     private String message;
 
-    public String getSavePath() {
-        return savePath;
+    public String getPath() {
+        return path;
     }
 
-    public void setSavePath(String savePath) {
-        this.savePath = savePath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getFileName() {
@@ -145,7 +145,7 @@ public class DownloadInfo implements Serializable {
     @Override
     public String toString() {
         return "DownloadInfo{" +
-                "savePath='" + savePath + '\'' +
+                "path='" + path + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", fileType='" + fileType + '\'' +
                 ", url='" + url + '\'' +

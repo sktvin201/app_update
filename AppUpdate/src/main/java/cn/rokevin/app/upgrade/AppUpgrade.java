@@ -37,7 +37,7 @@ public class AppUpgrade {
 
         if (TextUtils.isEmpty(url)) {
             if (isToast) {
-                ToastUtil.shortShow(activity, R.string.app_update_url_not_empty);
+                AUToast.shortShow(activity, R.string.app_update_url_not_empty);
             }
             return;
         }

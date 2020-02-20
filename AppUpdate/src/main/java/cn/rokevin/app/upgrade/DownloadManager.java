@@ -1,19 +1,12 @@
 package cn.rokevin.app.upgrade;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -65,7 +58,7 @@ public class DownloadManager implements DownloadProgressListener {
     public DownloadManager(Context context) {
 
         this.context = context;
-        path = context.getExternalCacheDir().getAbsolutePath() + "/downloads/app";
+        path = context.getCacheDir().getAbsolutePath() + "/downloads";
 
         myHandler = new MyHandler(Looper.myLooper(), context);
 
@@ -78,7 +71,7 @@ public class DownloadManager implements DownloadProgressListener {
         Log.e(TAG, "appName:" + appName);
 
         info = new DownloadInfo();
-        info.setSavePath(path);
+        info.setPath(path);
         info.setFileName(appName);
         info.setFileType("apk"); // 默认写死
         info.setStatus(DownloadInfo.WAIT_DOWNLOAD);
@@ -136,7 +129,7 @@ public class DownloadManager implements DownloadProgressListener {
 
                     if (is != null) {
 
-                        File dirFile = new File(info.getSavePath());
+                        File dirFile = new File(info.getPath());
 
                         if (!dirFile.exists()) {
                             dirFile.mkdirs();
