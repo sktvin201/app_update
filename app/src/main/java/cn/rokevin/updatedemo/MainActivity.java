@@ -2,12 +2,13 @@ package cn.rokevin.updatedemo;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import cn.rokevin.app.upgrade.AppUpgrade;
 import cn.rokevin.app.upgrade.DownloadInfo;
@@ -86,14 +87,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        AppUpgrade.update(MainActivity.this, url, false, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
 
-        AppUpgrade.update(MainActivity.this, false, url, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+        AppUpgrade.update(
+                MainActivity.this,
+                false,
+                url,
+                "1.0.1",
+                "1. 修复若干bug<br> 2. 增加特殊功能"
+        );
     }
 
     public void forceUpdate() {
 
 //        AppUpgrade.update(MainActivity.this, url, true, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
 
-        AppUpgrade.update(MainActivity.this, true, url, "1.0.1", "1. 修复若干bug<br> 2. 增加特殊功能");
+        AppUpgrade.update(
+                MainActivity.this,
+                true,
+                url,
+                "1.0.1",
+                "1. 强制更新版本<br> 2. 修复若干bug<br> 3. 增加特殊功能"
+        );
     }
 
     public void start() {
