@@ -1,4 +1,16 @@
 
+## 安装和上传
+
+在Android Studio Terminal窗口中运行命令
+
+```
+
+./gradlew install
+
+./gradlew bintrayUpload
+
+```
+
 ## 功能描述
 
 1. 普通更新
